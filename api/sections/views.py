@@ -6,11 +6,19 @@ from api.utils import check_and_validate_token
 from .models import Section
 
 class SectionsList(APIView):
+
+    # returns sections for user 2 - no need to authenticate (unauth users can view my sections on load of home page)
     def get(self, request):
-        payload = check_and_validate_token(request)
-        sections = Section.objects.filter(user_id=payload['id']);
+        sections = Section.objects.filter(user_id=2)
         serializer = SectionSerializer(sections, many=True)
         return Response(serializer.data)
+
+    # may be needed in future 
+    # def get(self, request):
+    #     payload = check_and_validate_token(request) # validates user
+    #     sections = Section.objects.filter(user_id=payload['id']); # returns only the the sections related to the logged in user
+    #     serializer = SectionSerializer(sections, many=True)
+    #     return Response(serializer.data)
 
     def post(self, request):
         payload = check_and_validate_token(request)

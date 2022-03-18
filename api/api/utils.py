@@ -10,6 +10,6 @@ def check_and_validate_token(request):
     try:
         payload = jwt.decode(token, 'secret', algorithm=['HS256'])
     except jwt.ExpiredSignatureError:
-        raise AuthenticationFailed('Unauthenticated!')
+        raise AuthenticationFailed('Token has expired!')
     
     return payload

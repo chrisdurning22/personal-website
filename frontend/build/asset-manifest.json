@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.37b4bdff.css",
+    "main.js": "/static/js/main.1644b832.js",
+    "static/js/787.774729bc.chunk.js": "/static/js/787.774729bc.chunk.js",
+    "static/media/graduation.png": "/static/media/graduation.f49aa4348c29d106dcd2.png",
+    "static/media/k-mitch-hodge-iOg5BslWehM-unsplash.jpg": "/static/media/k-mitch-hodge-iOg5BslWehM-unsplash.c80f41d72a44a94a51d8.jpg",
+    "index.html": "/index.html",
+    "main.37b4bdff.css.map": "/static/css/main.37b4bdff.css.map",
+    "main.1644b832.js.map": "/static/js/main.1644b832.js.map",
+    "787.774729bc.chunk.js.map": "/static/js/787.774729bc.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.37b4bdff.css",
+    "static/js/main.1644b832.js"
+  ]
+}

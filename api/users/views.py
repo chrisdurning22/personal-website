@@ -9,6 +9,7 @@ import jwt, datetime
 
 # Create your views here.
 class RegisterView(APIView):
+    # (todo) Need to add something to handle registering duplicate users
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -20,6 +21,7 @@ class LoginView(APIView):
     def post(self, request):
         email = request.data['email']
         password = request.data['password']
+        expireTimeMinutes = 1
 
         user = User.objects.filter(email=email).first()
 
@@ -31,7 +33,7 @@ class LoginView(APIView):
 
         payload = {
             'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1000),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=expireTimeMinutes),
             'iat': datetime.datetime.utcnow()
         }
 
@@ -41,7 +43,9 @@ class LoginView(APIView):
 
         response.set_cookie(key='jwt', value=token, httponly=True, samesite='None', secure=True)
         response.data = {
-            'jwt': token
+            'jwt': token,
+            'user_id': user.id,
+            'expire_time_seconds': expireTimeMinutes * 60
         }
         return response
 

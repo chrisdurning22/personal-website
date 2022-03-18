@@ -7,60 +7,77 @@ import {
 } from "react-router-dom";
 import './App.css';
 import Register from './Register';
+import Login from './Login';
+import Home from './Home';
+import { Container, Nav, Navbar } from 'react-bootstrap';
+import '@fortawesome/fontawesome-free/js/all.js';
+import { NoProps } from '../types/types';
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/register">Register</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/logout">Logout</Link>
-            </li>
-          </ul>
-        </nav>
-
-        <Routes>
-          <Route path="/" element={<Home />} />  
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="*" element={<NoMatch />} />
-      </Routes>
-      </div>
-    </Router>
-  );
+interface AppState {
+  isUserLoggedIn: boolean
 }
 
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
-  );
-}
+class App extends React.Component<NoProps, AppState> {
+  constructor(props: any) {
+    super(props);
+    console.log('app ', props);
+    this.state = {
+      isUserLoggedIn: false,
+    };
+  }
 
-function Login() {
-  return (
-    <div>
-      <h2>Login</h2>
-    </div>
-  );
+  setIsUserLoggedIn(isUserLoggedIn: boolean): void{
+    this.setState({
+      isUserLoggedIn: isUserLoggedIn
+    })
+  }
+
+  render() {
+    return (
+      <Router>
+        <div>
+          <Navbar expand="lg">
+            <Container>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto">
+                  <Nav.Link href="/">Curriculum Vitae</Nav.Link>
+                </Nav>
+                <Nav>
+                  <Nav.Link href="/login">Login</Nav.Link>
+                  <Nav.Link href="/register">Register</Nav.Link>
+                  { this.state.isUserLoggedIn ? <Nav.Link href="/logout" onClick={() => {this.setState({isUserLoggedIn: false})}} className="d-flex">Logout</Nav.Link> : null }
+                </Nav>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
+
+          <Routes>
+            <Route path="/" element={
+              <Home 
+                setIsUserLoggedIn={(isUserLoggedIn: boolean) => this.setIsUserLoggedIn(isUserLoggedIn)}
+                isUserLoggedIn={this.state.isUserLoggedIn}
+              />
+            } />  
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={
+              <Login 
+                setIsUserLoggedIn={(isUserLoggedIn: boolean) => this.setIsUserLoggedIn(isUserLoggedIn)}
+              />
+            } />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="*" element={<NoMatch />} />
+          </Routes>
+        </div>
+      </Router>
+    );
+  }
 }
 
 function Logout() {
   return (
     <div>
-      <h2>Logout</h2>
+      <h2>You have successfully logged out!</h2>
     </div>
   );
 }

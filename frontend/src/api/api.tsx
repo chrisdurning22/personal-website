@@ -1,47 +1,131 @@
-import axios from "axios";
+import { Section, LoginDetails, RegisterDetails } from "../types/types";
 
 const APIRoutes = {
-    REGISTER: "/register",
-    LOGIN: "/login",
-    LOGOUT: "/logout",
-    SECTION: "/section",
-    SECTIONS: "/sections"
+  REGISTER: "register",
+  LOGIN: "login",
+  LOGOUT: "logout",
+  SECTION: "section",
+  SECTIONS: "sections"
+}
+
+enum MethodType {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
 }
 
 export default class Api {
-  apiURL: string | undefined;
+  baseURL: string | undefined;
+
   constructor() {
-    this.apiURL = process.env.REACT_APP_API_ENDPOINT;
+    this.baseURL = process.env.REACT_APP_API_ENDPOINT;
   }
 
-  init = () => {
-    let headers = {
-      'Content-Type': 'application/json'
+  request = (methodType: MethodType, body?: any) => {
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8'
     };
 
-    let client = axios.create({
-      withCredentials: true,
-      baseURL: this.apiURL,
-      timeout: 31000,
+    let request: any = {
+      method: methodType, // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'include', // include, *same-origin, omit
       headers: headers
-    });
+    }
 
-    return client;
+    if(body != null) {
+      request.body = JSON.stringify(body);
+    }
+
+    return request;
+  }
+
+  // START - these should be placed in their own ts file and then extended by every service that needs them - pass in baseURl etc.. *****************
+  resolveOrRejectResponse = async (response: any) => {
+    const responseData = await response.json();
+
+    return new Promise((resolve, reject) => {
+      if(response.ok) {
+        resolve(responseData);
+      }
+      else {
+        reject(responseData);
+      }
+    })
+  }
+
+  post = async (suffix: string, body?: any) => {
+    const postURL = `${this.baseURL}/${suffix}`;
+    const response = await fetch(postURL, this.request(MethodType.POST, body));
+    return this.resolveOrRejectResponse(response);
+  }
+
+  get = async (suffix: string, id: number) => {
+    const getURL = `${this.baseURL}/${suffix}/${id}`;
+    const response = await fetch(getURL, this.request(MethodType.GET));
+    return this.resolveOrRejectResponse(response);
+  }
+
+  getAll = async (suffix: string) => {
+    const getAllURL = `${this.baseURL}/${suffix}`;
+    const response = await fetch(getAllURL, this.request(MethodType.GET));
+    return this.resolveOrRejectResponse(response);
+  }
+
+  put = async (suffix: string, body: any, id: number) => {
+    const putURL = `${this.baseURL}/${suffix}/${id}`;
+    const response = await fetch(putURL, this.request(MethodType.PUT, body));
+    return this.resolveOrRejectResponse(response);
+  }
+
+  delete = async (suffix: string, id: number) => {
+    const deleteURL = `${this.baseURL}/${suffix}/${id}`;
+    const response = await fetch(deleteURL, this.request(MethodType.DELETE));
+    return this.resolveOrRejectResponse(response);
+  }
+
+  // END ******************************************************************************************************************
+
+// this endpoint doesn't need to be authenticated (perhaps with credentials is not needed)
+  getSectionList = () => {
+    return this.getAll(APIRoutes.SECTIONS);
   };
 
-  getSectionList = (params?: any) => {
-    return this.init().get(APIRoutes.SECTIONS, { params: params });
-  };
+  saveSection = (section: Section) => {
+    return this.post(APIRoutes.SECTION, section);
+  }
 
-  LoginUser = (data: any) => {
-    return this.init().post(APIRoutes.LOGIN, data);
-  };
+  updateSection = (section: Section, id: number) => {
+    // get user_id from local storage return -1 when no user_id exists
+    const user_id = JSON.parse(localStorage.getItem("user_id") ?? "-1");
 
-  RegisterUser = (data: any): Promise<any> => {
-    return this.init().post(APIRoutes.REGISTER, data);
+    const putObject = {
+      id: section.id,
+      title: section.title,
+      content: section.content,
+      user: user_id
+    }
+
+    return this.put(APIRoutes.SECTION, putObject, id);
+  }
+
+  // need to update API so it knows which section relates to which user_id
+  deleteSection = (id: number) => {
+    return this.delete(APIRoutes.SECTION, id);
+  }
+
+  RegisterUser = (registerDetails: RegisterDetails): Promise<any> => {
+    return this.post(APIRoutes.REGISTER, registerDetails);
   };
 
   LogoutUser = () => {
-    return this.init().post(APIRoutes.LOGOUT);
+    return this.post(APIRoutes.LOGOUT);
+  };
+
+  LoginUser = (loginDetails: LoginDetails) => {
+    return this.post(APIRoutes.LOGIN, loginDetails);
   };
 }

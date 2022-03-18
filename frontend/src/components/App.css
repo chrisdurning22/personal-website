@@ -13,6 +13,10 @@
   }
 }
 
+h4 {
+  text-align: center;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -37,9 +41,113 @@
   }
 }
 
-
-.auth-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+body {
+  background-image: url('../images/background/k-mitch-hodge-iOg5BslWehM-unsplash.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-color: silver !important;
 }
+
+label {
+  color: rgba(0,0,0,.55);
+}
+
+/* .navbar-nav a {
+  border: 1px solid;
+} */
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+/*
+  Login and Register
+*/
+.auth-wrapper {
+  display: inline-block;
+  margin-top: 5rem;
+  padding: 20px 0;
+  position: relative;
+  background-color: white;
+  width: 22rem;
+  border-radius: 8px;
+}
+
+.auth-header {
+  text-decoration: underline;
+}
+
+.auth-body {
+  /* width: 20%; */
+padding: 20px 20px;
+}
+
+.auth-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/*
+  Login and Register end
+*/
+
+/*
+  Home
+*/
+
+.profile-pic-wrapper {
+  display: flex;
+  justify-content: start;
+  margin-top: 0px;
+  width: 300px;
+  height: 300px;
+  border: 10px solid white;
+  border-radius: 100%;
+  overflow: hidden;
+}
+
+.sections-footer {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px;
+}
+
+.svg-inline--fa {
+  color: white;
+}
+
+.input-title {
+  width: 100%;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.textarea-content {
+  width: 100%;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.card {
+  margin: 3rem 10rem; 
+}
+
+.invalid-input {
+  border: 1px solid red !important
+}
+
+.invalid-label {
+  color: red;
+  font-size: 12px;
+}
+
+/*
+  Home end
+*/
+
+
