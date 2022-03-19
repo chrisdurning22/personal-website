@@ -4,6 +4,7 @@ from rest_framework import status
 from .serializers import SectionSerializer
 from api.utils import check_and_validate_token
 from .models import Section
+import jwt # this can be removed
 
 class SectionsList(APIView):
 
@@ -48,9 +49,15 @@ class SectionDetail(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        check_and_validate_token(request)
+        payload = check_and_validate_token(request)
         section = self.get_object(pk)
-        serializer = SectionSerializer(section, data=request.data)
+        put_data = {
+            'id': pk,
+            'user': payload["id"],
+            'title': request.data["title"],
+            'content': request.data["content"]
+        }
+        serializer = SectionSerializer(section, data=put_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -61,4 +68,8 @@ class SectionDetail(APIView):
         check_and_validate_token(request)
         section = self.get_object(pk)
         section.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        response = Response()
+        response.data = {
+            'message': 'successfully deleted'
+        }
+        return response

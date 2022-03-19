@@ -18,10 +18,18 @@ class RegisterView(APIView):
 
 
 class LoginView(APIView):
+    def get(self, request):
+        payload = check_and_validate_token(request)
+        response = Response()
+        response.data = {
+            'message': 'user is logged in'
+        }
+        return response
+
     def post(self, request):
         email = request.data['email']
         password = request.data['password']
-        expireTimeMinutes = 1
+        expireTimeMinutes = 1000
 
         user = User.objects.filter(email=email).first()
 
@@ -41,11 +49,10 @@ class LoginView(APIView):
 
         response = Response()
 
-        response.set_cookie(key='jwt', value=token, httponly=True, samesite='None', secure=True)
+        response.set_cookie(key='jwt', value=token, httponly=True)
         response.data = {
             'jwt': token,
             'user_id': user.id,
-            'expire_time_seconds': expireTimeMinutes * 60
         }
         return response
 
