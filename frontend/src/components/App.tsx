@@ -12,24 +12,58 @@ import Home from './Home';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import '@fortawesome/fontawesome-free/js/all.js';
 import { NoProps } from '../types/types';
+import Api from '../api/api';
 
-interface AppState {
-  isUserLoggedIn: boolean
+type AppState = {
+  isUserLoggedIn: boolean;
 }
 
 class App extends React.Component<NoProps, AppState> {
+  api: Api;
+  
   constructor(props: any) {
     super(props);
-    console.log('app ', props);
+    this.api = new Api();
+
+    // check localStorage first (temporary solution - look at redux persist)
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+
     this.state = {
-      isUserLoggedIn: false,
+      isUserLoggedIn: isLoggedIn,
     };
+
   }
 
-  setIsUserLoggedIn(isUserLoggedIn: boolean): void{
+  componentDidMount() {
+    this.api.isUserLoggedIn()
+      .then(() => {
+        // user is logged in
+        this.setIsUserLoggedIn(true);
+      })
+      .catch(() => {
+        // user is logged out
+        this.setIsUserLoggedIn(false);
+      })
+  }
+
+  setIsUserLoggedIn(isUserLoggedIn: boolean): void {
+    // (deletes token from cookies
+    if(this.state.isUserLoggedIn && !isUserLoggedIn) {
+      this.api.LogoutUser()
+        .then((res) => {
+          console.log('res ', res);
+        })
+        .catch((err) => {
+          console.log('err ', err);
+        })
+    }
+
     this.setState({
       isUserLoggedIn: isUserLoggedIn
     })
+
+    // set in localStorage for synchronous get on refresh (stops navbar buttons from flickering)
+    localStorage.setItem('isLoggedIn', JSON.stringify(isUserLoggedIn));
   }
 
   render() {
@@ -44,9 +78,9 @@ class App extends React.Component<NoProps, AppState> {
                   <Nav.Link href="/">Curriculum Vitae</Nav.Link>
                 </Nav>
                 <Nav>
-                  <Nav.Link href="/login">Login</Nav.Link>
-                  <Nav.Link href="/register">Register</Nav.Link>
-                  { this.state.isUserLoggedIn ? <Nav.Link href="/logout" onClick={() => {this.setState({isUserLoggedIn: false})}} className="d-flex">Logout</Nav.Link> : null }
+                  { !this.state.isUserLoggedIn && <Nav.Link href="/login">Login</Nav.Link> }
+                  { this.state.isUserLoggedIn && <Nav.Link href="/register">Register</Nav.Link> }
+                  { this.state.isUserLoggedIn && <Nav.Link href="/" onClick={() => this.setIsUserLoggedIn(false)} className="d-flex">Logout</Nav.Link> }
                 </Nav>
               </Navbar.Collapse>
             </Container>

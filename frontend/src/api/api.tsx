@@ -76,13 +76,13 @@ export default class Api {
   }
 
   put = async (suffix: string, body: any, id: number) => {
-    const putURL = `${this.baseURL}/${suffix}/${id}`;
+    const putURL = `${this.baseURL}/${suffix}/${id}/`;
     const response = await fetch(putURL, this.request(MethodType.PUT, body));
     return this.resolveOrRejectResponse(response);
   }
 
   delete = async (suffix: string, id: number) => {
-    const deleteURL = `${this.baseURL}/${suffix}/${id}`;
+    const deleteURL = `${this.baseURL}/${suffix}/${id}/`;
     const response = await fetch(deleteURL, this.request(MethodType.DELETE));
     return this.resolveOrRejectResponse(response);
   }
@@ -94,19 +94,14 @@ export default class Api {
     return this.getAll(APIRoutes.SECTIONS);
   };
 
-  saveSection = (section: Section) => {
-    return this.post(APIRoutes.SECTION, section);
+  addSection = (section: Section) => {
+    return this.post(APIRoutes.SECTIONS, section);
   }
 
   updateSection = (section: Section, id: number) => {
-    // get user_id from local storage return -1 when no user_id exists
-    const user_id = JSON.parse(localStorage.getItem("user_id") ?? "-1");
-
     const putObject = {
-      id: section.id,
       title: section.title,
       content: section.content,
-      user: user_id
     }
 
     return this.put(APIRoutes.SECTION, putObject, id);
@@ -128,4 +123,10 @@ export default class Api {
   LoginUser = (loginDetails: LoginDetails) => {
     return this.post(APIRoutes.LOGIN, loginDetails);
   };
+
+  isUserLoggedIn = async () => {
+    const getURL = `${this.baseURL}/${APIRoutes.LOGIN}`;
+    const response = await fetch(getURL, this.request(MethodType.GET));
+    return this.resolveOrRejectResponse(response);
+  }
 }

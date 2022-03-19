@@ -82,7 +82,7 @@ label {
 
 .auth-body {
   /* width: 20%; */
-padding: 20px 20px;
+  padding: 20px 20px;
 }
 
 .auth-button {
@@ -113,8 +113,14 @@ padding: 20px 20px;
 .sections-footer {
   display: flex;
   justify-content: center;
-  gap: 5px;
-  padding: 10px;
+  margin-bottom: 3rem;
+}
+
+.sections-footer-no-sections {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 .svg-inline--fa {
@@ -146,8 +152,31 @@ padding: 20px 20px;
   font-size: 12px;
 }
 
+.align-children-center {
+  display: flex !important;
+  align-items: center;
+}
+
+.add-button-label {
+  color: white;
+  font-size: 20px;
+  padding-right: 5px;
+}
+
 /*
   Home end
 */
 
+/*
+  Section start
+*/
 
+.section-button-label {
+  color: white;
+  font-size: 16px;
+  padding-right: 5px;
+}
+
+/*
+  Section end
+*/

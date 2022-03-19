@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquarePlus, faSquareMinus } from '@fortawesome/free-solid-svg-icons'
+import { faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import React, { ChangeEvent } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import Api from '../api/api';
 import profilePicture from '../images/photos/graduation.png'
 import ResumeSection from './ResumeSection';
 import { Section } from '../types/types';
+import { TemporarySectionId } from '../constants/helperEnums';
 
 type HomeState = {
   sections: Section[],
@@ -30,13 +31,12 @@ class Home extends React.Component<HomeProps, HomeState> {
   constructor(props: any) {
     super(props);
     this.api = new Api();
-    console.log('home');
 
     this.state = {
       sections: [],
       sectionSelectedForEdit: { 
         editMode: false, 
-        id: -1,
+        id: TemporarySectionId.NoneSelected,
         isTitleDirty: false, 
         isContentDirty: false,
         isTitleValid: true,
@@ -46,12 +46,17 @@ class Home extends React.Component<HomeProps, HomeState> {
   }
 
   componentDidMount() {
+    this.getAndSetAllSections();
+  }
+
+  getAndSetAllSections(): void {
     this.api.getSectionList()
       .then((res: any) => {
         console.log(res);
         this.setState({
           sections: res.map((section: any) => {
             return {
+              id: section.id,
               title: section.title,
               content: section.content
             }
@@ -63,8 +68,20 @@ class Home extends React.Component<HomeProps, HomeState> {
       });
   }
 
-  addNewSection(index: number) {
-    console.log('add new sections: ', index);
+  addNewSection() {
+    console.log('add new sections ', this.state.sections);
+    const sections = this.state?.sections;
+    sections.push({
+      id: TemporarySectionId.Add,
+      title: "",
+      content: ""
+    });
+
+    this.setState({
+      sections: sections
+    });
+
+    this.setSelectedSection(true, TemporarySectionId.Add);
   }
 
   removeNewSection() {
@@ -94,8 +111,31 @@ class Home extends React.Component<HomeProps, HomeState> {
    * @param id unique value for each section
    * return the Section object
    */
-  getSection(id: number): Section {
-    return this.state.sections[id];
+  getSection(id: number): any {
+    return this.state.sections.find((section) => id === section.id);
+  }
+
+  deleteSection(id: number): void {
+    const sections = this.state.sections;
+    const deleteIndex = sections.findIndex((section) => id === section.id);
+    
+    // remove section at specified index
+    sections.splice(deleteIndex, 1);
+
+    this.setState({
+      sections: sections
+    })
+  }
+
+  setSection(section: Section): void {
+    const index = this.state.sections.findIndex((element) => section.id === element.id)
+    const sections = this.state.sections;
+    sections[index].title = section.title;
+    sections[index].content = section.content;
+
+    this.setState({
+      sections: sections
+    })
   }
 
   /**
@@ -106,7 +146,7 @@ class Home extends React.Component<HomeProps, HomeState> {
   handleTitleChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
     const sections = this.state.sections;
     
-    sections[id].title = e.target.value
+    this.getSection(id).title = e.target.value
     this.setState(prevState => ({ 
       sections: sections,
       sectionSelectedForEdit: {
@@ -124,8 +164,7 @@ class Home extends React.Component<HomeProps, HomeState> {
    */
   handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>, id: number) => {
     const sections = this.state.sections;
-    
-    sections[id].content = e.target.value
+    this.getSection(id).content = e.target.value
     this.setState(prevState => ({ 
       sections: sections,
       sectionSelectedForEdit: {
@@ -146,12 +185,12 @@ class Home extends React.Component<HomeProps, HomeState> {
         </div>
         <div className="sections-wrapper">
           <div className="sections-body">
-          {this.state.sections.map((value, index) => {
+          {this.state.sections.map((value) => {
             return (
               <ResumeSection
-                key={index}
-                id={index}
-                isActive={this.state.sectionSelectedForEdit.id === index}
+                key={value.id}
+                id={value.id}
+                isActive={this.state.sectionSelectedForEdit.id === value.id}
                 title={value.title}
                 content={value.content}
                 isTitleValid={this.state.sectionSelectedForEdit.isTitleValid}
@@ -161,14 +200,21 @@ class Home extends React.Component<HomeProps, HomeState> {
                 setSelectedSection={(editMode: boolean, id: number) => this.setSelectedSection(editMode, id)}
                 setIsUserLoggedIn={(isUserLoggedIn: boolean) => this.props.setIsUserLoggedIn(isUserLoggedIn)}
                 isUserLoggedIn={this.props.isUserLoggedIn}
+                deleteSection={(id: number) => this.deleteSection(id)}
+                setSection={(section: Section) => this.setSection(section)}
+                getAndSetAllSections={() => this.getAndSetAllSections()}
               />
             )
           })}
           </div>
-          <div className="sections-footer">
-            {/* <i onClick={this.addNewSection}><FontAwesomeIcon icon={faSquarePlus} size={"3x"}/></i> */}
-            {/* <i onClick={this.removeNewSection}><FontAwesomeIcon icon={faSquareMinus} size={"3x"}/></i> */}
-          </div>
+          {this.props.isUserLoggedIn && 
+            <div className={this.state.sections.length > 0 ? "sections-footer" : "sections-footer-no-sections"}>
+              <Button variant="primary" className="align-children-center" disabled={this.state.sectionSelectedForEdit.editMode} onClick={() => this.addNewSection()}>
+                <label className="add-button-label">Add</label>
+                <i><FontAwesomeIcon icon={faSquarePlus} size={"2x"}/></i>
+              </Button>
+            </div>
+          }
         </div>
       </div>
     );
