@@ -9,7 +9,6 @@ import jwt, datetime
 
 # Create your views here.
 class RegisterView(APIView):
-    # (todo) Need to add something to handle registering duplicate users
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -1,6 +1,5 @@
-import { AxiosResponse } from 'axios';
-import React, { SyntheticEvent, useState } from 'react';
-import { Alert, Button, Form, Toast } from 'react-bootstrap';
+import { SyntheticEvent, useState } from 'react';
+import { Alert, Button, Form } from 'react-bootstrap';
 import Api from '../api/api';
 import { LoginDetails } from '../types/types';
 import { useNavigate } from 'react-router-dom';
@@ -52,18 +51,18 @@ function Login(props: LoginProps) {
         </div>
         {error != null &&
           <Alert variant="danger" onClose={() => setError(null)} dismissible>
-          <p>{error}</p>
+            <label>{error}</label>
           </Alert>
         }
         <div className="auth-body">
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" onChange={e => setEmail(e.target.value)}/>
+              <Form.Control type="email" placeholder="Enter email" required onChange={e => setEmail(e.target.value)}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Enter password" onChange={e => setPassword(e.target.value)}/>
+              <Form.Control type="password" placeholder="Enter password" required onChange={e => setPassword(e.target.value)}/>
             </Form.Group>
             <div className="auth-button">
               <Button variant="primary" type="submit">

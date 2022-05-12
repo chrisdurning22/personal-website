@@ -43,7 +43,6 @@ export default class Api {
     return request;
   }
 
-  // START - these should be placed in their own ts file and then extended by every service that needs them - pass in baseURl etc.. *****************
   resolveOrRejectResponse = async (response: any) => {
     const responseData = await response.json();
 
@@ -87,9 +86,6 @@ export default class Api {
     return this.resolveOrRejectResponse(response);
   }
 
-  // END ******************************************************************************************************************
-
-// this endpoint doesn't need to be authenticated (perhaps with credentials is not needed)
   getSectionList = () => {
     return this.getAll(APIRoutes.SECTIONS);
   };
@@ -107,7 +103,6 @@ export default class Api {
     return this.put(APIRoutes.SECTION, putObject, id);
   }
 
-  // need to update API so it knows which section relates to which user_id
   deleteSection = (id: number) => {
     return this.delete(APIRoutes.SECTION, id);
   }

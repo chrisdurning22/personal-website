@@ -48,24 +48,39 @@ body {
   background-size: cover;
   background-attachment: fixed;
   background-color: silver !important;
+  /* background-color: grey !important; */
 }
 
 label {
   color: rgba(0,0,0,.55);
 }
 
-/* .navbar-nav a {
-  border: 1px solid;
-} */
-
 .flex-center {
   display: flex;
   justify-content: center;
 }
 
+.flex-gap-10 {
+  gap: 10px;
+}
+
+/*
+  App
+*/
+
+.nav-link {
+  font-size: 18px;
+  color: white !important;
+}
+
+/*
+  App end
+*/
+
 /*
   Login and Register
 */
+
 .auth-wrapper {
   display: inline-block;
   margin-top: 5rem;
@@ -81,7 +96,6 @@ label {
 }
 
 .auth-body {
-  /* width: 20%; */
   padding: 20px 20px;
 }
 
@@ -140,7 +154,7 @@ label {
 }
 
 .card {
-  margin: 3rem 10rem; 
+  margin: 1rem 30rem; 
 }
 
 .invalid-input {
@@ -150,9 +164,11 @@ label {
 .invalid-label {
   color: red;
   font-size: 12px;
+  display: block;
+
 }
 
-.align-children-center {
+.flex-align-center {
   display: flex !important;
   align-items: center;
 }
@@ -162,10 +178,6 @@ label {
   font-size: 20px;
   padding-right: 5px;
 }
-
-/*
-  Home end
-*/
 
 /*
   Section start
@@ -180,3 +192,16 @@ label {
 /*
   Section end
 */
+
+.alert {
+  margin-top: 18px;
+  margin-bottom: 0px !important
+}
+
+.card-text {
+  font-size: 20px;
+}
+
+.white-text {
+  color: white;
+}
