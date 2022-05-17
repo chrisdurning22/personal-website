@@ -1,0 +1,17 @@
+// creates requirements.txt for you
+pip freeze > requirements.txt 
+
+// needed using a postgresql db
+pip install psycopg2
+
+// web server used to run our python application on heroku
+pip install gunicorn
+
+// automatically configures your django app to work on heroku
+pip install django-heroku
+
+// allows your web app to serve its own static files
+pip install whitenoise
+
+// installs the cors header module
+pip install django-cors-headers
