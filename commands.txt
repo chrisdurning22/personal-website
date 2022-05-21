@@ -1,22 +1,38 @@
-// creates requirements.txt for you
+
+#### Activate Environment Mac
+. env/bin/activate
+
+#### Create SSL Certificate for local
+mkcert -cert-file cert.pem -key-file key.pem localhost 127.0.0.1
+
+#### Runs Server with SSL Certificate
+python manage.py runserver_plus --cert-file cert.pem --key-file key.pem
+
+#### List Dependancies
+pip list
+
+#### Turn on HTTPS and run app in dev mode
+export HTTPS=true&&npm start
+
+#### Creates requirements.txt for you
 pip freeze > requirements.txt 
 
-// needed using a postgresql db
+#### Needed when using a postgresql db
 pip install psycopg2
 
-// web server used to run our python application on heroku
+#### Web server used to run our python application on heroku
 pip install gunicorn
 
-// automatically configures your django app to work on heroku
+#### Automatically configures your django app to work on heroku
 pip install django-heroku
 
-// allows your web app to serve its own static files
+#### Allows your web app to serve its own static files
 pip install whitenoise
 
-// installs the cors header module
+#### Installs the cors header module
 pip install django-cors-headers
 
-// How to deploy to heroku
+#### How to deploy Django app to heroku
 1. git add .
 2. git commit -m 'first commit'
 3. git push heroku master
