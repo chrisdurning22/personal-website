@@ -39,3 +39,14 @@ python manage.py migrate
 1. git add .
 2. git commit -m 'first commit'
 3. git push heroku master
+
+#### How to run Django app locally
+1. go to /Users/chrisdurning/2021/personal-website via command line
+2. run command: . env/bin/activate
+3. run command: cd api
+4. if you don't have a database set up run command: python manage.py migrate
+5. run command: python manage.py runserver
+
+#### How to run React app locally
+1. go to root directory
+2. run command: npm start
