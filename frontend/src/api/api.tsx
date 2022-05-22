@@ -19,6 +19,7 @@ export default class Api {
   baseURL: string | undefined;
 
   constructor() {
+    // uses env.development on npm start, uses env.production on npm run build
     this.baseURL = process.env.REACT_APP_API_ENDPOINT;
   }
 
