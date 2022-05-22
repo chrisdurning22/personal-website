@@ -32,6 +32,9 @@ pip install whitenoise
 #### Installs the cors header module
 pip install django-cors-headers
 
+#### Migrate database
+python manage.py migrate
+
 #### How to deploy Django app to heroku
 1. git add .
 2. git commit -m 'first commit'
