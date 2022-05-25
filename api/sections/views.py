@@ -8,9 +8,9 @@ import jwt # this can be removed
 
 class SectionsList(APIView):
 
-    # returns sections for user 2 - no need to authenticate (unauth users can view my sections on load of home page)
+    # returns sections for user 1 - no need to authenticate (unauth users can view my sections on load of home page)
     def get(self, request):
-        sections = Section.objects.filter(user_id=2)
+        sections = Section.objects.filter(user_id=1)
         serializer = SectionSerializer(sections, many=True)
         return Response(serializer.data)
 
