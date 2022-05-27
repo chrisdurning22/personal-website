@@ -126,3 +126,49 @@ export default class Api {
     return this.resolveOrRejectResponse(response);
   }
 }
+
+const baseURL = process.env.REACT_APP_API_ENDPOINT;
+
+const request = (methodType: MethodType, body?: any) => {
+  const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json;charset=UTF-8'
+  };
+
+  let request: any = {
+    method: methodType, // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'include', // include, *same-origin, omit
+    headers: headers
+  }
+
+  if(body != null) {
+    request.body = JSON.stringify(body);
+  }
+
+  return request;
+}
+
+const resolveOrRejectResponse = async (response: any) => {
+  const responseData = await response.json();
+
+  return new Promise((resolve, reject) => {
+    if(response.ok) {
+      resolve(responseData);
+    }
+    else {
+      reject(responseData);
+    }
+  })
+}
+
+const post = async (suffix: string, body?: any): Promise<any> => {
+  const postURL = `${baseURL}/${suffix}`;
+  const response = await fetch(postURL, request(MethodType.POST, body));
+  return resolveOrRejectResponse(response);
+}
+
+export const LoginUser = (loginDetails: LoginDetails): Promise<any> => {
+  return post(APIRoutes.LOGIN, loginDetails);
+};

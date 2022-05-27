@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
-import Api from '../api/api';
+import { LoginUser } from '../api/api';
 import { LoginDetails } from '../types/types';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,12 +8,10 @@ type LoginProps = {
   setIsUserLoggedIn: (isUserLoggedIn: boolean) => void
 }
 
-// I used a functional component here because it makes redirecting/navigating much easier
-function Login(props: LoginProps) {
+function Login({setIsUserLoggedIn}: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const api = new Api();
   const navigate = useNavigate();
 
   const handleSubmit = (event: SyntheticEvent) => {
@@ -23,7 +21,7 @@ function Login(props: LoginProps) {
       password: password
     }
 
-    api.LoginUser(loginDetails)
+    LoginUser(loginDetails)
     .then(() => {
       // clear errors
       if(error != null) {
@@ -31,7 +29,7 @@ function Login(props: LoginProps) {
       }
 
       // set isUserLoggedIn to true on App component
-      props.setIsUserLoggedIn(true);
+      setIsUserLoggedIn(true);
 
       // navigate to the home page after a successful login
       navigate("/"); 
