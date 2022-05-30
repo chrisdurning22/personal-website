@@ -115,7 +115,7 @@ label {
 
 .profile-pic-wrapper {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   margin-top: 0px;
   width: 300px;
   height: 300px;

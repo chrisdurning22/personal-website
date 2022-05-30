@@ -12,6 +12,7 @@ import Home from './Home';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { NoProps } from '../types/types';
 import Api from '../api/api';
+import { ToastContainer } from 'react-toastify';
 
 type AppState = {
   isUserLoggedIn: boolean;
@@ -67,60 +68,63 @@ class App extends React.Component<NoProps, AppState> {
 
   render() {
     return (
-      <Router>
-        <div>
-          <Navbar expand="lg">
-            <Container>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                  <Nav.Link href="/">CV</Nav.Link>
-                </Nav>
-                <Nav>
-                  { !this.state.isUserLoggedIn && 
-                    <Nav.Link href="/login">Login</Nav.Link> 
-                  }
-                  { this.state.isUserLoggedIn && 
-                    <Nav.Link href="/register">Register</Nav.Link> 
-                  }
-                  { this.state.isUserLoggedIn && 
-                    <Nav.Link href="/" onClick={() => this.setIsUserLoggedIn(false)} className="d-flex">Logout</Nav.Link> 
-                  }
-                </Nav>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
+      <div>
+        <Router>
+          <div>
+            <Navbar expand="lg">
+              <Container>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                  <Nav className="me-auto">
+                    <Nav.Link href="/">CV</Nav.Link>
+                  </Nav>
+                  <Nav>
+                    { !this.state.isUserLoggedIn && 
+                      <Nav.Link href="/login">Login</Nav.Link> 
+                    }
+                    { this.state.isUserLoggedIn && 
+                      <Nav.Link href="/register">Register</Nav.Link> 
+                    }
+                    { this.state.isUserLoggedIn && 
+                      <Nav.Link href="/" onClick={() => this.setIsUserLoggedIn(false)} className="d-flex">Logout</Nav.Link> 
+                    }
+                  </Nav>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
 
-          <Routes>
-            <Route 
-              path="/" 
-              element={
-                <Home 
-                  setIsUserLoggedIn={(isUserLoggedIn: boolean) => this.setIsUserLoggedIn(isUserLoggedIn)}
-                  isUserLoggedIn={this.state.isUserLoggedIn}
-                />
-              } 
-            />  
-            {this.state.isUserLoggedIn &&
-              <Route path="/register" element={<Register />} />
-            }
-            {!this.state.isUserLoggedIn &&
+            <Routes>
               <Route 
-                path="/login" 
+                path="/" 
                 element={
-                  <Login 
+                  <Home 
                     setIsUserLoggedIn={(isUserLoggedIn: boolean) => this.setIsUserLoggedIn(isUserLoggedIn)}
+                    isUserLoggedIn={this.state.isUserLoggedIn}
                   />
                 } 
-              />
-            }
-            {this.state.isUserLoggedIn &&
-              <Route path="/logout" element={<Logout />} />
-            }
-            <Route path="*" element={<NoMatch />} />
-          </Routes>
-        </div>
-      </Router>
+              />  
+              {this.state.isUserLoggedIn &&
+                <Route path="/register" element={<Register />} />
+              }
+              {!this.state.isUserLoggedIn &&
+                <Route 
+                  path="/login" 
+                  element={
+                    <Login 
+                      setIsUserLoggedIn={(isUserLoggedIn: boolean) => this.setIsUserLoggedIn(isUserLoggedIn)}
+                    />
+                  } 
+                />
+              }
+              {this.state.isUserLoggedIn &&
+                <Route path="/logout" element={<Logout />} />
+              }
+              <Route path="*" element={<NoMatch />} />
+            </Routes>
+          </div>
+        </Router>
+        <ToastContainer />
+      </div>
     );
   }
 }

@@ -3,6 +3,7 @@ import { Alert, Button, Form } from 'react-bootstrap';
 import { LoginUser } from '../api/api';
 import { LoginDetails } from '../types/types';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 type LoginProps = {
   setIsUserLoggedIn: (isUserLoggedIn: boolean) => void
@@ -11,7 +12,6 @@ type LoginProps = {
 function Login({setIsUserLoggedIn}: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = (event: SyntheticEvent) => {
@@ -23,20 +23,27 @@ function Login({setIsUserLoggedIn}: LoginProps) {
 
     LoginUser(loginDetails)
     .then(() => {
-      // clear errors
-      if(error != null) {
-        setError(null);
-      }
-
+      
       // set isUserLoggedIn to true on App component
       setIsUserLoggedIn(true);
+
+      // removes previous error messages
+      toast.dismiss();
+
+      toast.success("Successfully Authenticated!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 1000,
+      });
 
       // navigate to the home page after a successful login
       navigate("/"); 
     })
     .catch((err: any) => {
-      // set API error
-      setError(err.detail);
+      toast.dismiss();
+      toast.error(err.detail, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: false,
+      });
     })
     
   }
@@ -47,11 +54,6 @@ function Login({setIsUserLoggedIn}: LoginProps) {
         <div className="auth-header">
           <h4>Please Login</h4>
         </div>
-        {error != null &&
-          <Alert variant="danger" onClose={() => setError(null)} dismissible>
-            <label>{error}</label>
-          </Alert>
-        }
         <div className="auth-body">
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
