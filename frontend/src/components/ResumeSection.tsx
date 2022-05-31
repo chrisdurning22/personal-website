@@ -96,7 +96,7 @@ class ResumeSection extends React.Component<ResumeSectionProps, ResumeSectionSta
    * Ejects section from edit mode back to read only mode
    */
   cancelEdit(): void { 
-    if(this.state.sectionBeforeEdit.id != TemporarySectionId.Add) {
+    if(this.state.sectionBeforeEdit.id !== TemporarySectionId.Add) {
       this.props.setSection(this.state.sectionBeforeEdit);
     }
     else {

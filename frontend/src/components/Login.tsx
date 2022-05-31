@@ -30,7 +30,7 @@ function Login({setIsUserLoggedIn}: LoginProps) {
       // removes previous error messages
       toast.dismiss();
 
-      toast.success("Successfully Authenticated!", {
+      toast.success("Successfully Authenticated", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 1000,
       });

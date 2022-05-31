@@ -11,18 +11,13 @@ type HomeProps = {
 }
 
 class Home extends React.Component<HomeProps, NoState> {
-
-  constructor(props: any) {
-    super(props);
-
-  }
   
   render() {
     return (
       <div>
         <div className="flex-center margin-top-50">
           <div className="profile-pic-wrapper">
-            <img src={profilePicture}/>
+            <img alt="Me at my college graduation" src={profilePicture}/>
           </div>
         </div>
         <div className="flex-center">
