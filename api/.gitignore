@@ -1,0 +1,33 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# Byte-compiled / optimized / DLL files
+*/__pycache__/
+*.pyc
+
+# dependencies
+**/node_modules
+
+# testing
+/coverage
+
+# production
+/build
+
+# Distribution / packaging
+.Python
+env/
+build/
+
+# misc
+.DS_Store
+.env
+.env.development
+.env.test
+.env.production
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+local-sqlite-db
+
