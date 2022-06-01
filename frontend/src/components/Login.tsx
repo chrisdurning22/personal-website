@@ -1,5 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
-import { Alert, Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { LoginUser } from '../api/api';
 import { LoginDetails } from '../types/types';
 import { useNavigate } from 'react-router-dom';
