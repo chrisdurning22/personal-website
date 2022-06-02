@@ -6,6 +6,8 @@ import Api from '../api/api';
 import ResumeSection from './ResumeSection';
 import { Section } from '../types/types';
 import { TemporarySectionId } from '../constants/helperEnums';
+import LoadingSkeleton from './LoadingSkeleton';
+
 
 type ResumeSectionListState = {
   sections: Section[],
@@ -13,8 +15,9 @@ type ResumeSectionListState = {
     editMode: boolean; 
     id: number; 
     isTitleValid: boolean; 
-    isContentValid: boolean 
-  };
+    isContentValid: boolean;
+  },
+  loading: boolean;
 }
 
 type ResumeSectionListProps = {
@@ -36,7 +39,8 @@ class ResumeSectionList extends React.Component<ResumeSectionListProps, ResumeSe
         id: TemporarySectionId.NoneSelected,
         isTitleValid: true,
         isContentValid: true  
-      } 
+      },
+      loading: true
     };
   }
 
@@ -59,6 +63,10 @@ class ResumeSectionList extends React.Component<ResumeSectionListProps, ResumeSe
             }
           })
         });
+
+        this.setState({
+          loading: false
+        })
       })
       .catch((err) => {
         console.log('err: ', err);
@@ -205,6 +213,14 @@ class ResumeSectionList extends React.Component<ResumeSectionListProps, ResumeSe
                   />
                 )
               })
+            }
+            {
+              this.state.loading &&
+              <div>
+                <LoadingSkeleton/>
+                <LoadingSkeleton/>
+                <LoadingSkeleton/>
+              </div>
             }
           </div>
           {this.props.isUserLoggedIn && 
