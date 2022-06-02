@@ -42,7 +42,7 @@ h4 {
 }
 
 body {
-  background-image: url('../images/background/k-mitch-hodge-iOg5BslWehM-unsplash.jpg');
+  /* background-image: url('../images/background/k-mitch-hodge-iOg5BslWehM-unsplash.jpg'); */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -115,10 +115,10 @@ label {
 
 .profile-pic-wrapper {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   margin-top: 0px;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   border: 10px solid white;
   border-radius: 100%;
   overflow: hidden;
@@ -154,7 +154,8 @@ label {
 }
 
 .card {
-  margin: 1rem 30rem; 
+  margin: 1rem 15rem;
+  background-color:rgba(0, 0, 0, 0.5) !important;
 }
 
 .invalid-input {

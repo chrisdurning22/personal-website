@@ -109,7 +109,6 @@ class ResumeSection extends React.Component<ResumeSectionProps, ResumeSectionSta
   render() {
     return (
         <Card
-          style={{backgroundColor: `rgba(0, 0, 0, 0.5)`}}
           text={'light'}
         >
             { this.props.isUserLoggedIn &&
@@ -160,7 +159,9 @@ class ResumeSection extends React.Component<ResumeSectionProps, ResumeSectionSta
                 </div>
                 :
                 <div className="section-wrapper">
-                    <h3><u>{this.props.title}</u></h3>
+                    <h3>
+                      <u>{this.props.title}</u>
+                    </h3>
                     <Card.Text style={{whiteSpace: `pre-line`}}>
                       {this.props.content}
                     </Card.Text>
