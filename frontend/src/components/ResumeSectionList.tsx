@@ -23,6 +23,7 @@ type ResumeSectionListState = {
 type ResumeSectionListProps = {
   setIsUserLoggedIn: (isUserLoggedIn: boolean) => void;
   isUserLoggedIn: boolean;
+  setHomeLoading: (loading: boolean) => void
 }
 
 class ResumeSectionList extends React.Component<ResumeSectionListProps, ResumeSectionListState> {
@@ -67,6 +68,9 @@ class ResumeSectionList extends React.Component<ResumeSectionListProps, ResumeSe
         this.setState({
           loading: false
         })
+
+        this.props.setHomeLoading(false);
+
       })
       .catch((err) => {
         console.log('err: ', err);
