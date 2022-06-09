@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import profilePicture from '../images/photos/graduation.png'
-import { NoState } from '../types/types';
 import { faGithub, faInstagram, faLinkedin, faStackOverflow } from '@fortawesome/free-brands-svg-icons';
 import ResumeSectionList from './ResumeSectionList';
 
@@ -10,9 +9,8 @@ type HomeProps = {
   isUserLoggedIn: boolean;
 }
 
-class Home extends React.Component<HomeProps, NoState> {
+function Home({setIsUserLoggedIn, isUserLoggedIn}: HomeProps) {
   
-  render() {
     return (
       <div>
         <div className="flex-center margin-top-50">
@@ -38,12 +36,11 @@ class Home extends React.Component<HomeProps, NoState> {
           </a>
         </div>
         <ResumeSectionList
-          setIsUserLoggedIn={(isUserLoggedIn: boolean) => this.props.setIsUserLoggedIn(isUserLoggedIn)}
-          isUserLoggedIn={this.props.isUserLoggedIn}
+          setIsUserLoggedIn={(isUserLoggedIn: boolean) => setIsUserLoggedIn(isUserLoggedIn)}
+          isUserLoggedIn={isUserLoggedIn}
         />
       </div>
     );
-  }
 }
 
 export default Home;
