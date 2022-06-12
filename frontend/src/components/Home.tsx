@@ -26,9 +26,9 @@ function Home({setIsUserLoggedIn, isUserLoggedIn}: HomeProps) {
             </div>
           </div>
           <div className="flex-center">
-            <h2 className="white-text margin-top-15">CHRIS DURNING</h2>
+            <h2 className="margin-top-15">CHRIS DURNING</h2>
           </div>
-          <div className="flex-center flex-gap-10 margin-top-10">
+          <div className="contact-wrapper flex-center flex-gap-15 margin-top-10">
             <a title="Github" href="https://github.com/chrisdurning22?tab=repositories">
               <FontAwesomeIcon icon={faGithub} size={"3x"} />
             </a>

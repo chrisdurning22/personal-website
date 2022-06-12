@@ -141,7 +141,7 @@ class ResumeSection extends React.Component<ResumeSectionProps, ResumeSectionSta
             <Card.Body>
               { this.props.isActive ?
                 <div>
-                <label className="white-text">Title:</label>
+                <label>Title:</label>
                 <input 
                     type="text" 
                     className={"input-title " + (this.props.isTitleValid ? "" : "invalid-input")}
@@ -149,7 +149,7 @@ class ResumeSection extends React.Component<ResumeSectionProps, ResumeSectionSta
                     onChange={(e) => this.props.handleTitleChange(e, this.props.id)}
                 />
                 {!this.props.isTitleValid && <label className="invalid-label">This field is required</label>}
-                <label className="white-text">Content:</label>
+                <label>Content:</label>
                 <textarea 
                     className={"textarea-content " + (this.props.isContentValid ? "" : "invalid-input")}
                     value={this.props.content} 
@@ -159,8 +159,8 @@ class ResumeSection extends React.Component<ResumeSectionProps, ResumeSectionSta
                 </div>
                 :
                 <div className="section-wrapper">
-                    <h3>
-                      <u>{this.props.title}</u>
+                    <h3 className="margin-top-10 margin-bottom-20">
+                      {this.props.title}
                     </h3>
                     <Card.Text style={{whiteSpace: `pre-line`}}>
                       {this.props.content}
