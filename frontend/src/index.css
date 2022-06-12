@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
   font-family: 'LobsterRegular';
   src: local('LobsterRegular'), url(./fonts/Lobster-Regular.ttf) format('truetype');
 }
@@ -25,12 +25,12 @@
 
 @font-face {
   font-family: 'Gravity';
-  src: local('Gravity'), url(./fonts/Gravity-Book.otf) format('opentype');
-}
+  src: local('Gravity'), url(./fonts/Gravity-Book.otf) format('opentype'); */
+/* } */
 
 body {
   margin: 0;
-  font-family: Gravity !important;
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

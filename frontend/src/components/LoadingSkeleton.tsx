@@ -4,7 +4,7 @@ function LoadingSkeleton() {
 
   return (
     <div className="card card-body">
-        <SkeletonTheme baseColor="#808080" highlightColor="#FFFFFF">
+        <SkeletonTheme baseColor="#808080" highlightColor="#FFFFFF" width="25%">
             <h3>
                 <Skeleton count={1} />
             </h3>

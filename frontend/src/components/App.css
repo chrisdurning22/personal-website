@@ -47,7 +47,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
-  background-color: silver !important;
+  background-color: #F5F5F5 !important;
   /* background-color: grey !important; */
 }
 
@@ -69,8 +69,12 @@ label {
 */
 
 .nav-link {
-  font-size: 18px;
+  font-size: 20px;
   color: white !important;
+}
+
+.navbar {
+  background: cadetblue;
 }
 
 /*
@@ -155,7 +159,7 @@ label {
 
 .card {
   margin: 1rem 15rem;
-  background-color:rgba(0, 0, 0, 0.5) !important;
+  background-color:white !important;
 }
 
 .invalid-input {
@@ -201,6 +205,10 @@ label {
 
 .card-text {
   font-size: 20px;
+}
+
+.section-wrapper {
+  color: black !important;
 }
 
 .white-text {
