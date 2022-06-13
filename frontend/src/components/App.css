@@ -128,6 +128,11 @@ label {
   overflow: hidden;
 }
 
+.title {
+  font-size: 50px !important;
+  font-family: 'Monofett', cursive;
+}
+
 .sections-footer {
   display: flex;
   justify-content: center;

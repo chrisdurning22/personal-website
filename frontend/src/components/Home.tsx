@@ -26,7 +26,7 @@ function Home({setIsUserLoggedIn, isUserLoggedIn}: HomeProps) {
             </div>
           </div>
           <div className="flex-center">
-            <h2 className="margin-top-15">CHRIS DURNING</h2>
+            <h2 className="margin-top-15 title">CHRIS DURNING</h2>
           </div>
           <div className="contact-wrapper flex-center flex-gap-15 margin-top-10">
             <a title="Github" href="https://github.com/chrisdurning22?tab=repositories">
