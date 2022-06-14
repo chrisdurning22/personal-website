@@ -77,6 +77,10 @@ label {
   background: cadetblue;
 }
 
+a:hover {
+  color: orange !important;
+}
+
 /*
   App end
 */
@@ -124,6 +128,7 @@ label {
   width: 200px;
   height: 200px;
   border: 10px solid white;
+  outline: 1px solid rgba(0,0,0,.125);;
   border-radius: 100%;
   overflow: hidden;
 }
@@ -166,7 +171,7 @@ label {
 }
 
 .card {
-  margin: 1rem 35rem;
+  margin: 1rem 30rem;
   background-color:white !important;
 }
 
@@ -200,6 +205,10 @@ label {
   color: white;
   font-size: 16px;
   padding-right: 5px;
+}
+
+.sections-body {
+  margin-bottom: 100px !important;
 }
 
 /*
