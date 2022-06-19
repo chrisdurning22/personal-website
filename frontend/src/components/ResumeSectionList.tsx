@@ -2,11 +2,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import Api from '../api/api';
 import ResumeSection from './ResumeSection';
 import { Section } from '../types/types';
 import { TemporarySectionId } from '../constants/helperEnums';
 import LoadingSkeleton from './LoadingSkeleton';
+import { GetSectionList } from '../api/api';
 
 type ResumeSectionListProps = {
   setIsUserLoggedIn: (isUserLoggedIn: boolean) => void;
@@ -15,7 +15,6 @@ type ResumeSectionListProps = {
 }
 
 function ResumeSectionList({setIsUserLoggedIn, isUserLoggedIn, setHomeLoading}: ResumeSectionListProps) {
-  const api = new Api();
   const [sections, setSections] = useState([]);
   const [sectionSelectedForEdit, setSectionSelectedForEdit] = useState({ 
                                                                 editMode: false, 
@@ -26,14 +25,14 @@ function ResumeSectionList({setIsUserLoggedIn, isUserLoggedIn, setHomeLoading}: 
   const [loading, setLoading] = useState(true);                                                 
 
   useEffect(() => {
-    getAndSetAllSections();
+    getAndSetAllSections();// eslint-disable-next-line
   }, []);
 
   /**
    * Gets list of all sections from the API and sets them in the sections array
    */
   const getAndSetAllSections = () => {
-    api.getSectionList()
+    GetSectionList()
       .then((res: any) => {
         setSections(res.map((section: any) => {
           return {
@@ -85,7 +84,7 @@ function ResumeSectionList({setIsUserLoggedIn, isUserLoggedIn, setHomeLoading}: 
     // remove section at specified index
     tempSections.splice(deleteIndex, 1);
 
-    setSections(tempSections);
+    setSections([...tempSections]);
   }
 
   /**

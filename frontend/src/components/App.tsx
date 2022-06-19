@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,46 +10,28 @@ import Register from './Register';
 import Login from './Login';
 import Home from './Home';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { NoProps } from '../types/types';
-import Api from '../api/api';
 import { ToastContainer } from 'react-toastify';
+import { IsUserLoggedIn, LogoutUser } from '../api/api';
 
-type AppState = {
-  isUserLoggedIn: boolean;
-}
-
-class App extends React.Component<NoProps, AppState> {
-  api: Api;
+function App() {
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
   
-  constructor(props: any) {
-    super(props);
-    this.api = new Api();
-
-    // check localStorage first (temporary solution - look at redux persist)
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
-
-    this.state = {
-      isUserLoggedIn: isLoggedIn,
-    };
-
-  }
-
-  componentDidMount() {
-    this.api.isUserLoggedIn()
+  useEffect(() => {
+    IsUserLoggedIn()
       .then(() => {
         // user is logged in
-        this.setIsUserLoggedIn(true);
+        setIsUserLoggedIn(true);
       })
       .catch(() => {
         // user is logged out
-        this.setIsUserLoggedIn(false);
+        setIsUserLoggedIn(false);
       })
-  }
+  }, []);
 
-  setIsUserLoggedIn(isUserLoggedIn: boolean): void {
-    // (deletes token from cookies
-    if(this.state.isUserLoggedIn && !isUserLoggedIn) {
-      this.api.LogoutUser()
+  const onSetIsUserLoggedIn = (userLoggedIn: boolean): void => {
+      // (deletes token from cookies
+    if (isUserLoggedIn && !userLoggedIn) {
+      LogoutUser()
         .then((res) => {
           console.log('res ', res);
         })
@@ -58,15 +40,12 @@ class App extends React.Component<NoProps, AppState> {
         })
     }
 
-    this.setState({
-      isUserLoggedIn: isUserLoggedIn
-    })
+    setIsUserLoggedIn(userLoggedIn)
 
     // set in localStorage for synchronous get on refresh (stops navbar buttons from flickering)
-    localStorage.setItem('isLoggedIn', JSON.stringify(isUserLoggedIn));
+    localStorage.setItem('isLoggedIn', JSON.stringify(userLoggedIn));
   }
 
-  render() {
     return (
       <div>
         <Router>
@@ -79,14 +58,14 @@ class App extends React.Component<NoProps, AppState> {
                     <Nav.Link href="/">CV</Nav.Link>
                   </Nav>
                   <Nav>
-                    { !this.state.isUserLoggedIn && 
+                    { !isUserLoggedIn && 
                       <Nav.Link href="/login">Login</Nav.Link> 
                     }
-                    { this.state.isUserLoggedIn && 
+                    { isUserLoggedIn && 
                       <Nav.Link href="/register">Register</Nav.Link> 
                     }
-                    { this.state.isUserLoggedIn && 
-                      <Nav.Link href="/" onClick={() => this.setIsUserLoggedIn(false)} className="d-flex">Logout</Nav.Link> 
+                    { isUserLoggedIn && 
+                      <Nav.Link href="/" onClick={() => onSetIsUserLoggedIn(false)} className="d-flex">Logout</Nav.Link> 
                     }
                   </Nav>
                 </Navbar.Collapse>
@@ -98,25 +77,25 @@ class App extends React.Component<NoProps, AppState> {
                 path="/" 
                 element={
                   <Home 
-                    setIsUserLoggedIn={(isUserLoggedIn: boolean) => this.setIsUserLoggedIn(isUserLoggedIn)}
-                    isUserLoggedIn={this.state.isUserLoggedIn}
+                    setIsUserLoggedIn={(isUserLoggedIn: boolean) => onSetIsUserLoggedIn(isUserLoggedIn)}
+                    isUserLoggedIn={isUserLoggedIn}
                   />
                 } 
               />  
-              {this.state.isUserLoggedIn &&
+              {isUserLoggedIn &&
                 <Route path="/register" element={<Register />} />
               }
-              {!this.state.isUserLoggedIn &&
+              {!isUserLoggedIn &&
                 <Route 
                   path="/login" 
                   element={
                     <Login 
-                      setIsUserLoggedIn={(isUserLoggedIn: boolean) => this.setIsUserLoggedIn(isUserLoggedIn)}
+                      setIsUserLoggedIn={(isUserLoggedIn: boolean) => onSetIsUserLoggedIn(isUserLoggedIn)}
                     />
                   } 
                 />
               }
-              {this.state.isUserLoggedIn &&
+              {isUserLoggedIn &&
                 <Route path="/logout" element={<Logout />} />
               }
               <Route path="*" element={<NoMatch />} />
@@ -126,7 +105,6 @@ class App extends React.Component<NoProps, AppState> {
         <ToastContainer />
       </div>
     );
-  }
 }
 
 function Logout() {

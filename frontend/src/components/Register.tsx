@@ -1,6 +1,7 @@
-import React, { SyntheticEvent } from 'react';
+import { AnyNaptrRecord } from 'dns';
+import React, { SyntheticEvent, useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
-import Api from '../api/api';
+import { RegisterUser } from '../api/api';
 import { NoProps } from '../types/types';
 
 type RegisterState = {
@@ -11,26 +12,16 @@ type RegisterState = {
   errors: string[] | null;
 }
 
-class Register extends React.Component<NoProps, RegisterState> {
-  api: Api;
+function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState([]);
 
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      errors: null
-    };
-    this.api = new Api();
-  }
-
-  setError(errorObject: { field: string[] } | null) {
-    if(errorObject == null) {
-      this.setState({
-        errors: null
-      })
+  const setError = (errorObject: { field: string[] } | null) => {
+    if (errorObject == null) {
+      setErrors([]);
     }
     else {
       let errors: string[] = [];
@@ -39,49 +30,46 @@ class Register extends React.Component<NoProps, RegisterState> {
         errors.push(value[0]);
       });
 
-      this.setState({
-        errors: errors
-      })
+      setErrors(errors as any);
     }
   }
 
-  handleSubmit = (event: SyntheticEvent) => {
+  const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
 
-    if(this.state.password !== this.state.confirmPassword) {
-      this.setError({
+    if(password !== confirmPassword) {
+      setError({
         field: ['passwords do not match.']
       })
     }
     else {
       const postObject = {
-        name: this.state.name,
-        email: this.state.email,
-        password: this.state.password,
-        confirmPassword: this.state.confirmPassword
+        name,
+        email,
+        password,
+        confirmPassword
       }
   
-      this.api.RegisterUser(postObject)
+      RegisterUser(postObject)
         .then(() => {
-          this.setError(null);
+          setError(null);
         })
         .catch((err) => {
-          this.setError(err);
+          setError(err);
         })
     }
   }
 
-  render() {
   return (
     <div className="flex-center">
       <div className="auth-wrapper">
         <div className="auth-header">
           <h4>Please Register</h4>
         </div>
-        {this.state.errors != null &&
-          <Alert variant="danger" onClose={() => this.setError(null)} dismissible>
+        { errors != null &&
+          <Alert variant="danger" onClose={() => setError(null)} dismissible>
             {
-              this.state.errors.map((value, index) => {
+              errors.map((value, index) => {
                 return (
                   <label key={index}>{value}</label>
                 )
@@ -90,22 +78,22 @@ class Register extends React.Component<NoProps, RegisterState> {
           </Alert>
         }
         <div className="auth-body">
-          <Form onSubmit={this.handleSubmit}>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter name" required onChange={e => this.setState({name: e.target.value})}/>
+              <Form.Control type="text" placeholder="Enter name" required onChange={e => setName(e.target.value)}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" required onChange={e => this.setState({email: e.target.value})}/>
+              <Form.Control type="email" placeholder="Enter email" required onChange={e => setEmail(e.target.value)}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Enter password" required onChange={e => this.setState({password: e.target.value})}/>
+              <Form.Control type="password" placeholder="Enter password" required onChange={e => setPassword(e.target.value)}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" placeholder="Confirm password" required onChange={e => this.setState({confirmPassword: e.target.value})}/>
+              <Form.Control type="password" placeholder="Confirm password" required onChange={e => setConfirmPassword(e.target.value)}/>
             </Form.Group>
             <div className="auth-button">
               <Button variant="primary" type="submit">
@@ -117,7 +105,6 @@ class Register extends React.Component<NoProps, RegisterState> {
       </div>
     </div>
   );
-  }
 }
 
 export default Register;

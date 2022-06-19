@@ -15,118 +15,6 @@ enum MethodType {
   DELETE = 'DELETE',
 }
 
-export default class Api {
-  baseURL: string | undefined;
-
-  constructor() {
-    // uses env.development on npm start, uses env.production on npm run build
-    this.baseURL = process.env.REACT_APP_API_ENDPOINT;
-  }
-
-  request = (methodType: MethodType, body?: any) => {
-    const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json;charset=UTF-8'
-    };
-
-    let request: any = {
-      method: methodType, // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'include', // include, *same-origin, omit
-      headers: headers
-    }
-
-    if(body != null) {
-      request.body = JSON.stringify(body);
-    }
-
-    return request;
-  }
-
-  resolveOrRejectResponse = async (response: any) => {
-    const responseData = await response.json();
-
-    return new Promise((resolve, reject) => {
-      if(response.ok) {
-        resolve(responseData);
-      }
-      else {
-        reject(responseData);
-      }
-    })
-  }
-
-  post = async (suffix: string, body?: any) => {
-    const postURL = `${this.baseURL}/${suffix}`;
-    const response = await fetch(postURL, this.request(MethodType.POST, body));
-    return this.resolveOrRejectResponse(response);
-  }
-
-  get = async (suffix: string, id: number) => {
-    const getURL = `${this.baseURL}/${suffix}/${id}`;
-    const response = await fetch(getURL, this.request(MethodType.GET));
-    return this.resolveOrRejectResponse(response);
-  }
-
-  getAll = async (suffix: string) => {
-    const getAllURL = `${this.baseURL}/${suffix}`;
-    const response = await fetch(getAllURL, this.request(MethodType.GET));
-    return this.resolveOrRejectResponse(response);
-  }
-
-  put = async (suffix: string, body: any, id: number) => {
-    const putURL = `${this.baseURL}/${suffix}/${id}/`;
-    const response = await fetch(putURL, this.request(MethodType.PUT, body));
-    return this.resolveOrRejectResponse(response);
-  }
-
-  delete = async (suffix: string, id: number) => {
-    const deleteURL = `${this.baseURL}/${suffix}/${id}/`;
-    const response = await fetch(deleteURL, this.request(MethodType.DELETE));
-    return this.resolveOrRejectResponse(response);
-  }
-
-  getSectionList = () => {
-    return this.getAll(APIRoutes.SECTIONS);
-  };
-
-  addSection = (section: Section) => {
-    return this.post(APIRoutes.SECTIONS, section);
-  }
-
-  updateSection = (section: Section, id: number) => {
-    const putObject = {
-      title: section.title,
-      content: section.content,
-    }
-
-    return this.put(APIRoutes.SECTION, putObject, id);
-  }
-
-  deleteSection = (id: number) => {
-    return this.delete(APIRoutes.SECTION, id);
-  }
-
-  RegisterUser = (registerDetails: RegisterDetails): Promise<any> => {
-    return this.post(APIRoutes.REGISTER, registerDetails);
-  };
-
-  LogoutUser = () => {
-    return this.post(APIRoutes.LOGOUT);
-  };
-
-  LoginUser = (loginDetails: LoginDetails) => {
-    return this.post(APIRoutes.LOGIN, loginDetails);
-  };
-
-  isUserLoggedIn = async () => {
-    const getURL = `${this.baseURL}/${APIRoutes.LOGIN}`;
-    const response = await fetch(getURL, this.request(MethodType.GET));
-    return this.resolveOrRejectResponse(response);
-  }
-}
-
 const baseURL = process.env.REACT_APP_API_ENDPOINT;
 
 const request = (methodType: MethodType, body?: any) => {
@@ -163,12 +51,75 @@ const resolveOrRejectResponse = async (response: any) => {
   })
 }
 
+// CRUD Start
+
 const post = async (suffix: string, body?: any): Promise<any> => {
   const postURL = `${baseURL}/${suffix}`;
   const response = await fetch(postURL, request(MethodType.POST, body));
   return resolveOrRejectResponse(response);
 }
 
+const get = async (suffix: string, id: number) => {
+  const getURL = `${baseURL}/${suffix}/${id}`;
+  const response = await fetch(getURL, request(MethodType.GET));
+  return resolveOrRejectResponse(response);
+}
+
+const getAll = async (suffix: string) => {
+  const getAllURL = `${baseURL}/${suffix}`;
+  const response = await fetch(getAllURL, request(MethodType.GET));
+  return resolveOrRejectResponse(response);
+}
+
+const put = async (suffix: string, body: any, id: number) => {
+  const putURL = `${baseURL}/${suffix}/${id}/`;
+  const response = await fetch(putURL, request(MethodType.PUT, body));
+  return resolveOrRejectResponse(response);
+}
+
+const del = async (suffix: string, id: number) => {
+  const deleteURL = `${baseURL}/${suffix}/${id}/`;
+  const response = await fetch(deleteURL, request(MethodType.DELETE));
+  return resolveOrRejectResponse(response);
+}
+
+// CRUD End
+
+export const GetSectionList = () => {
+  return getAll(APIRoutes.SECTIONS);
+};
+
+export const AddSection = (section: Section) => {
+  return post(APIRoutes.SECTIONS, section);
+}
+
+export const UpdateSection = (section: Section, id: number) => {
+  const putObject = {
+    title: section.title,
+    content: section.content,
+  }
+
+  return put(APIRoutes.SECTION, putObject, id);
+}
+
+export const DeleteSection = (id: number) => {
+  return del(APIRoutes.SECTION, id);
+}
+
+export const RegisterUser = (registerDetails: RegisterDetails): Promise<any> => {
+  return post(APIRoutes.REGISTER, registerDetails);
+};
+
+export const LogoutUser = () => {
+  return post(APIRoutes.LOGOUT);
+};
+
 export const LoginUser = (loginDetails: LoginDetails): Promise<any> => {
   return post(APIRoutes.LOGIN, loginDetails);
 };
+
+export const IsUserLoggedIn = async () => {
+  const getURL = `${baseURL}/${APIRoutes.LOGIN}`;
+  const response = await fetch(getURL, request(MethodType.GET));
+  return resolveOrRejectResponse(response);
+}
