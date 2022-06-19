@@ -12,6 +12,7 @@ class SectionsList(APIView):
     def get(self, request):
         sections = Section.objects.filter(user_id=1)
         serializer = SectionSerializer(sections, many=True)
+        ordering_fields = ['id']
         return Response(serializer.data)
 
     # may be needed in future 
