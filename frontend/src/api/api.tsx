@@ -59,11 +59,11 @@ const post = async (suffix: string, body?: any): Promise<any> => {
   return resolveOrRejectResponse(response);
 }
 
-const get = async (suffix: string, id: number) => {
-  const getURL = `${baseURL}/${suffix}/${id}`;
-  const response = await fetch(getURL, request(MethodType.GET));
-  return resolveOrRejectResponse(response);
-}
+// const get = async (suffix: string, id: number) => {
+//   const getURL = `${baseURL}/${suffix}/${id}`;
+//   const response = await fetch(getURL, request(MethodType.GET));
+//   return resolveOrRejectResponse(response);
+// }
 
 const getAll = async (suffix: string) => {
   const getAllURL = `${baseURL}/${suffix}`;
