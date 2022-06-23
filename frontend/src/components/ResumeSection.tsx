@@ -39,7 +39,7 @@ function ResumeSection({
   setSection,
   getAndSetAllSections
 }: ResumeSectionProps) {
-  const [sectionBeforeEdit, setSectionBeforeEdit] = useState({
+  const [sectionBeforeEdit] = useState({
     id,
     title,
     content

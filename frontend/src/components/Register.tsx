@@ -1,46 +1,23 @@
-import { AnyNaptrRecord } from 'dns';
-import React, { SyntheticEvent, useState } from 'react';
-import { Alert, Button, Form } from 'react-bootstrap';
+import { SyntheticEvent, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
 import { RegisterUser } from '../api/api';
-import { NoProps } from '../types/types';
-
-type RegisterState = {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  errors: string[] | null;
-}
+import { toast } from 'react-toastify';
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState([]);
-
-  const setError = (errorObject: { field: string[] } | null) => {
-    if (errorObject == null) {
-      setErrors([]);
-    }
-    else {
-      let errors: string[] = [];
-
-      Object.entries(errorObject).forEach(([key, value]) => {
-        errors.push(value[0]);
-      });
-
-      setErrors(errors as any);
-    }
-  }
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
 
     if(password !== confirmPassword) {
-      setError({
-        field: ['passwords do not match.']
-      })
+      toast.dismiss();
+      toast.error('Passwords Do Not Match', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: false,
+      });
     }
     else {
       const postObject = {
@@ -52,10 +29,17 @@ function Register() {
   
       RegisterUser(postObject)
         .then(() => {
-          setError(null);
+          toast.success('Registration Successful', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
         })
         .catch((err) => {
-          setError(err);
+          toast.dismiss();
+          toast.error(err.detail, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: false,
+          });
         })
     }
   }
@@ -66,17 +50,6 @@ function Register() {
         <div className="auth-header">
           <h4>Please Register</h4>
         </div>
-        { errors != null &&
-          <Alert variant="danger" onClose={() => setError(null)} dismissible>
-            {
-              errors.map((value, index) => {
-                return (
-                  <label key={index}>{value}</label>
-                )
-              })
-            }
-          </Alert>
-        }
         <div className="auth-body">
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">

@@ -140,9 +140,14 @@ a:hover {
   overflow: hidden;
 }
 
+@font-face {
+  font-family: 'MonofettRegular';
+  src: local('MonofettRegular'), url(../fonts/Monofett-Regular.ttf) format('truetype');
+}
+
 .title {
   font-size: 50px !important;
-  font-family: 'Monofett', cursive;
+  font-family: MonofettRegular;
 }
 
 .sections-footer {
@@ -169,7 +174,7 @@ a:hover {
 }
 
 .contact-wrapper > a:hover {
-  transform: scale(1.3);
+  transform: scale(1.2);
 }
 
 .input-title {
