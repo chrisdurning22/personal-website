@@ -190,7 +190,7 @@ a:hover {
 }
 
 .card {
-  margin: 1rem 30rem;
+  margin: 1rem 10rem; /** */
   background-color:white !important;
 }
 
@@ -245,7 +245,7 @@ a:hover {
 
 .section-wrapper {
   color: black !important;
-  padding: 0px 10px 10px 10px !important;
+  /* padding: 0px 10px 10px 10px !important; */
 }
 
 .white-text {
